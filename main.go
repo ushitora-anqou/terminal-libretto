@@ -75,8 +75,8 @@ func (gen *ScriptGenerator) ReadLibretto(r io.Reader) {
 	}
 }
 
-func run() error {
-	file, err := os.Open("libretto")
+func run(librettoPath string) error {
+	file, err := os.Open(librettoPath)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,12 @@ func run() error {
 }
 
 func main() {
-	err := run()
+	if len(os.Args) != 2 {
+		log.Fatalf("Usage: %s LIBRETTO-PATH", os.Args[0])
+	}
+	librettoPath := os.Args[1]
+
+	err := run(librettoPath)
 	if err != nil {
 		log.Fatalf("ERROR: %v", err)
 	}
