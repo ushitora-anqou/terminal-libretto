@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/alessio/shellescape"
@@ -69,8 +70,11 @@ func (gen *ScriptGenerator) ReadLibretto(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		line := scanner.Text()
-
-		gen.displayLine(line)
+		shouldDisplay := line[0] == '$'
+		line = strings.Trim(line, "$ \t")
+		if shouldDisplay {
+			gen.displayLine(line)
+		}
 		gen.execLine(line)
 	}
 }
